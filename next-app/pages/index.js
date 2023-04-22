@@ -121,8 +121,8 @@ const IndexPage = () => {
   return (
     <main className="text-[16px] h-screen w-screen overflow-hidden">
       <APIKeyInputModal show={showAPIKeyInputModal} onSaveKey={handleSaveAPIKey} onHide={() => setShowAPIKeyInputModal(false)} />
-      <header className="border-b border-b-borderColor p-5 flex items-center justify-between">
-        <div className="flex items-center gap-2 m-auto text-xl">
+      <header className="border-b border-b-borderColor p-5 flex justify-between items-center w-full">
+        <div className="flex items-center gap-1 text-xl">
           <BsFillBagFill />
           <b>Showwcase</b>
         </div>
