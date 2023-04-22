@@ -8,7 +8,7 @@ export default function RecommendedShows({ shows }) {
         <PostCard
           key={index}
           title={item.title}
-          dateTime={item.publishedDate}
+          dateTime={item.publishedDate || item.createdAt}
           readTime={item.readingStats.text}
           image={
             item.coverImage ||
