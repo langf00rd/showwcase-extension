@@ -7,6 +7,8 @@ export default function TrendingShows({ shows }) {
             key={index}
             title={item.title}
             views={item.views}
+            totalUpvotes={item.totalUpvotes}
+            totalComments={item.totalComments}
             link={`https://www.showwcase.com/show/${item.id}/${item.slug}`}
             summary={item.projectSummary}
             dateTime={item.publishedDate || item.createdAt}

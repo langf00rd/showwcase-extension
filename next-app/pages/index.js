@@ -2,15 +2,15 @@
 import { useState, useEffect } from "react"
 import { HiPencil } from "react-icons/hi"
 import { TbJumpRope } from "react-icons/tb"
-import { BsFillBookmarkFill } from "react-icons/bs"
+import { BsFillBagFill, BsFillBookmarkFill } from "react-icons/bs"
 import TrendingShows from "../components/tabViews/TrendingShows"
 import RecommendedShows from "../components/tabViews/RecommendedShows"
 import axios from "axios"
 
 const TABS = [
+  "✨ Recommended shows",
   "Trending shows",
-  "Recommended shows",
-  "New shows"
+  "My bookmarks"
 ]
 
 const IndexPage = () => {
@@ -54,15 +54,17 @@ const IndexPage = () => {
   }
 
   useEffect(() => {
-    if (activeTab === TABS[0]) getTrendingShows()
-    else if (activeTab === TABS[1]) getRecommendedShows()
+    if (activeTab === TABS[0]) getRecommendedShows()
+    if (activeTab === TABS[1]) getTrendingShows()
   }, [activeTab])
 
   return (
     <main className="text-[16px] h-screen w-screen overflow-hidden">
       <header className="border-b border-b-borderColor p-5 flex items-center justify-between">
-        <b>Showwcase extension</b>
-        <button>Sign in</button>
+        <div className="flex items-center gap-2 m-auto text-xl">
+          <BsFillBagFill />
+          <b>Showwcase</b>
+        </div>
       </header>
       <div className="w-screen h-screen flex">
         <div className="flex-[1] p-5 border-r border-r-borderColor">
@@ -90,8 +92,8 @@ const IndexPage = () => {
               </li>
             ))}
           </ul>
-          {activeTab === TABS[0] && <TrendingShows shows={trendingShows} />}
-          {activeTab === TABS[1] && <RecommendedShows shows={recommendedShows} />}
+          {activeTab === TABS[1] && <TrendingShows shows={trendingShows} />}
+          {activeTab === TABS[0] && <RecommendedShows shows={recommendedShows} />}
         </div>
       </div>
     </main>

@@ -2,13 +2,15 @@
 import React, { useState } from 'react'
 import { BsFillBookmarkFill } from 'react-icons/bs'
 import { FiMoreVertical, FiX } from 'react-icons/fi'
-import { AiFillEye } from 'react-icons/ai'
+import { AiFillEye, AiFillHeart } from 'react-icons/ai'
+import { RiThumbUpFill, RiThumbDownFill } from 'react-icons/ri'
+import { FaComment } from 'react-icons/fa'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import formatDate from "../../utils/formatDate.util";
 import formatNumber from "../../utils/formatNumber.util";
 import Link from "next/link";
 
-export default function PostCard({ title, dateTime, readTime, image, summary, views, link }) {
+export default function PostCard({ title, dateTime, readTime, image, summary, views, link, totalUpvotes, totalComments }) {
     const [showMenu, setShowMenu] = useState(false)
     const [showPostInfo, setShowPostInfo] = useState(false)
 
@@ -17,12 +19,9 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
             <FiX onClick={() => setShowPostInfo(false)} className="cursor-pointer hover:text-brand transition-all my-10" size={50} />
             <div className="post-info-modal p-10 rounded-xl rounded-b-none h-full overflow-scroll w-full max-w-3xl border border-gray-700 bg-gray-800">
                 <h1 className="text-3xl font-bold mb-2">{title}</h1>
-                <div className="text-gray-400 flex items-center gap-1">
-                    <p>{formatDate(dateTime)} • </p>
-                    <p>{readTime} • </p>
-                    <div className="flex items-center gap-1">
-                        <AiFillEye /> {formatNumber(views)} views
-                    </div>
+                <div className="flex items-center gap-5">
+                    <p className="text-gray-500 flex items-center gap-3">{formatDate(dateTime)} • {readTime}</p>
+                    <Stats />
                 </div>
                 {image ? <img loading="lazy" src={image} className="w-full my-5 rounded-xl bg-gray-700" alt={"blog post image of " + title} />
                     : <div className="w-full my-5 rounded-xl bg-gray-700 h-[300px]" />}
@@ -42,12 +41,28 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
                 </div>
                 {summary && <>
                     <label className={styles.label}>Summary</label>
-                    <p className="text-gray-300">{summary}</p>
-                </>}
+                    <p className="text-gray-300">{summary}</p></>}
             </div>
         </div>
 
         return <></>
+    }
+
+    const Stats = () => {
+        return <ul className="flex items-center justify-between text-gray-500 w-full max-w-[150px]">
+            <li className="flex text-sm items-center gap-1">
+                <AiFillHeart />
+                <p>{totalUpvotes}</p>
+            </li>
+            <li className="flex text-sm items-center gap-1">
+                <FaComment />
+                <p>{totalComments}</p>
+            </li>
+            <li className="flex text-sm items-center gap-1">
+                <AiFillEye />
+                <p>{formatNumber(views)}</p>
+            </li>
+        </ul>
     }
 
     return (
@@ -64,18 +79,14 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
             <div className="bg-gray-900 p-5 select-none rounded-xl relative border border-gray-800 hover:border-gray-600 cursor-pointer transition-all flex flex-col justify-between">
                 <div className="mb-3 flex flex-col gap-3">
                     <h3 className='font-medium w-[200px] text-[20px] max-lines-2'>{title}</h3>
-                    <div className="text-sm text-gray-400 flex items-center gap-1">
-                        <p>{formatDate(dateTime)} • </p>
-                        <p>{readTime} • </p>
-                        <div className="flex items-center gap-1">
-                            <AiFillEye /> {formatNumber(views)} views
-                        </div>
-                    </div>
+                    <p className="text-sm text-gray-400 flex items-center gap-3">{formatDate(dateTime)} • {readTime}</p>
                     {!showMenu ? <FiMoreVertical onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />
                         : <FiX onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />}
                 </div>
                 {image ? <img onClick={() => setShowPostInfo(true)} loading="lazy" src={image} className="w-full h-[170px] object-cover rounded-xl bg-gray-800" alt={"blog post image of " + title} />
                     : <div onClick={() => setShowPostInfo(true)} className="w-full h-[170px] object-cover rounded-xl bg-gray-800" />}
+                <div className="m-3" />
+                <Stats />
             </div>
         </li>
     );
