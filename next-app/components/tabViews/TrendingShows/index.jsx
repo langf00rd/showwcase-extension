@@ -7,7 +7,7 @@ export default function TrendingShows({shows}) {
             {shows.map((item, index) => <PostCard
                 key={index}
                 title={item.title}
-                dateTime={item.publishedDate}
+                dateTime={item.publishedDate||item.createdAt}
                 readTime={item.readingStats.text}
                 image={item.coverImage||'https://daily-now-res.cloudinary.com/image/upload/f_auto,q_auto/v1681948882/2bd9a5f8e1d4ed32daaa78052b8bdd32'}
             />)}

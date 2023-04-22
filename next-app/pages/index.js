@@ -28,6 +28,7 @@ const IndexPage = () => {
         const filter = response.data.filter((response) => {
           return response.title !== "" && response.readingStats?.words > 100;
         });
+        console.log(filter);
         setTrendingShows(filter);
       })
       .catch(function (error) {
@@ -58,9 +59,11 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    if (activeTab === TABS[0]) {
+    if (activeTab === TABS[0] && trendingShows.length < 1) {
+      console.log("no trending shows");
       getTrendingShows();
-    } else if (activeTab === TABS[1]) {
+    } else if (activeTab === TABS[1] && recommendedShows.length < 1) {
+      console.log("no recommended shows");
       getRecommendedShows();
     }
   }, [activeTab]);
