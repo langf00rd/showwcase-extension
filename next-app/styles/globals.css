@@ -30,3 +30,16 @@ a {
   line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+.post-info-modal {
+  animation: slideUp 0.1s linear;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
