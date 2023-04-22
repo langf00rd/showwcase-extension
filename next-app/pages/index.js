@@ -111,6 +111,12 @@ const IndexPage = () => {
     if (activeTab === TABS[0]) getRecommendedShows()
     if (activeTab === TABS[1]) getTrendingShows()
     if (activeTab === TABS[2]) getBookmarks()
+  }, [])
+
+  useEffect(() => {
+    if (activeTab === TABS[0] && recommendedShows.length < 1) getRecommendedShows()
+    if (activeTab === TABS[1] && trendingShows.length < 1) getTrendingShows()
+    if (activeTab === TABS[2] && bookmarks.length < 1) getBookmarks()
   }, [activeTab])
 
   const handleSignOut = () => {
