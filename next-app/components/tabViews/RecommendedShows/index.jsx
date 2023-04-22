@@ -1,7 +1,9 @@
 import React from "react";
 import PostCard from "../../PostCard";
 
-export default function RecommendedShows({ shows }) {
+export default function RecommendedShows({ shows, loading }) {
+    if (loading) return <p>Loading...</p>
+
     return <ul className="grid grid-cols-3 gap-5">
         {shows.map((item, index) => <PostCard
             key={index}

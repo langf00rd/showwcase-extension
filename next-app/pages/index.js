@@ -6,6 +6,7 @@ import { BsFillBagFill, BsFillBookmarkFill } from "react-icons/bs"
 import TrendingShows from "../components/tabViews/TrendingShows"
 import RecommendedShows from "../components/tabViews/RecommendedShows"
 import axios from "axios"
+import Bookmarks from "../components/tabViews/Bookmarks"
 
 const TABS = [
   "✨ Recommended shows",
@@ -17,6 +18,8 @@ const IndexPage = () => {
   const [activeTab, setActiveTab] = useState(TABS[0])
   const [trendingShows, setTrendingShows] = useState([])
   const [recommendedShows, setRecommendedShows] = useState([])
+  const [bookmarks, setBookmarks] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const getTrendingShows = () => {
     const options = {
@@ -25,14 +28,18 @@ const IndexPage = () => {
       params: { limit: "1000" },
     }
 
+    setLoading(true)
+
     axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
+      setLoading(false)
     }).catch(function (error) {
       console.error(error)
+      setLoading(false)
     })
   }
 
@@ -43,19 +50,54 @@ const IndexPage = () => {
       params: { limit: "1000" }
     }
 
+    setLoading(true)
+
     axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
+      setLoading(false)
     }).catch(function (error) {
       console.error(error)
+      setLoading(false)
+    })
+  }
+
+  async function getBookmarks() {
+    let apiKey = localStorage.getItem('shcapk')
+
+    if (!apiKey) return
+
+    console.log(apiKey)
+
+    let headersList = {
+      "Accept": "*/*",
+      "x-api-key": apiKey
+    }
+
+    let reqOptions = {
+      url: "https://beta-cache.showwcase.com/bookmarks",
+      method: "GET",
+      headers: headersList,
+    }
+
+    setLoading(true)
+
+    await axios.request(reqOptions).then(response => {
+      let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
+      setBookmarks(bookmarkedShows)
+      setLoading(false)
+    }).catch(function (error) {
+      console.error(error)
+      setLoading(false)
     })
   }
 
   useEffect(() => {
     if (activeTab === TABS[0]) getRecommendedShows()
     if (activeTab === TABS[1]) getTrendingShows()
+    if (activeTab === TABS[2]) getBookmarks()
   }, [activeTab])
 
   return (
@@ -92,8 +134,9 @@ const IndexPage = () => {
               </li>
             ))}
           </ul>
-          {activeTab === TABS[1] && <TrendingShows shows={trendingShows} />}
-          {activeTab === TABS[0] && <RecommendedShows shows={recommendedShows} />}
+          {activeTab === TABS[0] && <RecommendedShows shows={recommendedShows} loading={loading} />}
+          {activeTab === TABS[1] && <TrendingShows shows={trendingShows} loading={loading} />}
+          {activeTab === TABS[2] && <Bookmarks shows={bookmarks} loading={loading} />}
         </div>
       </div>
     </main>
