@@ -2,13 +2,14 @@
 import { useState } from "react";
 import { HiPencil } from 'react-icons/hi'
 import { TbJumpRope } from 'react-icons/tb'
-import PostCard from "../components/PostCard";
+import { BsFillBookmarkFill } from 'react-icons/bs'
+import TrendingShows from "../components/tabViews/TrendingShows";
+import RecommendedShows from "../components/tabViews/RecommendedShows";
 
 const TABS = [
   'Trending shows',
-  'New shows',
   'Recommended shows',
-  'My bookmarks'
+  'New shows',
 ]
 
 const IndexPage = () => {
@@ -32,6 +33,10 @@ const IndexPage = () => {
               <TbJumpRope />
               <p>Create a thread</p>
             </li>
+            <li className={styles.iconLink}>
+              <BsFillBookmarkFill />
+              <p>My bookmarks</p>
+            </li>
           </ul>
         </div>
         <div className="flex-[5] p-5 lg:px-32 md:px-20 overflow-y-scroll pb-32">
@@ -40,14 +45,8 @@ const IndexPage = () => {
               <p>{item}</p>
             </li>)}
           </ul>
-          <ul className="grid grid-cols-3 gap-5">
-            {[',', ',', ',', ',', ',', ',', ',', ',', ',', ',',].map((item, index) => <PostCard
-              key={index}
-              title='Svelte Furthers Enterprise Readiness with SvelteKit General'
-              dateTime='Apr 19 • 3m read time'
-              image='https://daily-now-res.cloudinary.com/image/upload/f_auto,q_auto/v1681948882/2bd9a5f8e1d4ed32daaa78052b8bdd32'
-            />)}
-          </ul>
+          {activeTab === TABS[0] && <TrendingShows />}
+          {activeTab === TABS[1] && <RecommendedShows />}
         </div>
       </div>
     </main>

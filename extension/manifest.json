@@ -1,5 +1,5 @@
 {
-  "name": "Next Chrome",
+  "name": "Showwcase Extension",
   "description": "Next.js Chrome Extension starter",
   "version": "0.0.1",
   "manifest_version": 3,
@@ -7,7 +7,7 @@
     "newtab": "index.html"
   },
   "action": {
-    "default_title": "Next.js app",
+    "default_title": "New Tab",
     "default_popup": "index.html"
   }
 }
