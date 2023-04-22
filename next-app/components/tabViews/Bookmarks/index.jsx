@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import PostCard from "../../PostCard"
-import { FiX } from "react-icons/fi"
-import { APIKeyInputModal } from "../../../modals/APIKeyInputModal"
+import { APIKeyInputModal } from "../../modals/APIKeyInputModal"
 
 export default function Bookmarks({ shows, loading }) {
     const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
 
-    function handleSaveAPIKey(apiKey) {
+    const handleSaveAPIKey = (apiKey) => {
         localStorage.setItem('shcapk', apiKey)
         alert('Saved 🎉')
-        setShowAPIKeyInputModal(false)
+        window.location.reload()
     }
 
     if (loading) return <p>Loading...</p>

@@ -2,11 +2,14 @@
 import { useState, useEffect } from "react"
 import { HiPencil } from "react-icons/hi"
 import { TbJumpRope } from "react-icons/tb"
-import { BsFillBagFill, BsFillBookmarkFill } from "react-icons/bs"
+import { BsFillBagFill } from "react-icons/bs"
+import { GoKey } from "react-icons/go"
 import TrendingShows from "../components/tabViews/TrendingShows"
 import RecommendedShows from "../components/tabViews/RecommendedShows"
 import axios from "axios"
 import Bookmarks from "../components/tabViews/Bookmarks"
+import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
+import { FiLogOut } from "react-icons/fi"
 
 const TABS = [
   "✨ Recommended shows",
@@ -20,6 +23,13 @@ const IndexPage = () => {
   const [recommendedShows, setRecommendedShows] = useState([])
   const [bookmarks, setBookmarks] = useState([])
   const [loading, setLoading] = useState(true)
+  const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
+  const [showAccountMenu, setShowAccountMenu] = useState(false)
+  const [apiKey, setAPIKey] = useState('')
+
+  useEffect(() => {
+    setAPIKey(localStorage.getItem('shcapk') || '')
+  }, [])
 
   const getTrendingShows = () => {
     const options = {
@@ -64,12 +74,8 @@ const IndexPage = () => {
     })
   }
 
-  async function getBookmarks() {
-    let apiKey = localStorage.getItem('shcapk')
-
+  const getBookmarks = async () => {
     if (!apiKey) return
-
-    console.log(apiKey)
 
     let headersList = {
       "Accept": "*/*",
@@ -94,18 +100,49 @@ const IndexPage = () => {
     })
   }
 
+  const handleSaveAPIKey = (apiKey) => {
+    localStorage.setItem('shcapk', apiKey)
+    alert('Saved 🎉')
+    window.location.reload()
+  }
+
   useEffect(() => {
     if (activeTab === TABS[0]) getRecommendedShows()
     if (activeTab === TABS[1]) getTrendingShows()
     if (activeTab === TABS[2]) getBookmarks()
   }, [activeTab])
 
+  const handleSignOut = () => {
+    localStorage.clear()
+    window.location.reload()
+  }
+
   return (
     <main className="text-[16px] h-screen w-screen overflow-hidden">
+      <APIKeyInputModal show={showAPIKeyInputModal} onSaveKey={handleSaveAPIKey} onHide={() => setShowAPIKeyInputModal(false)} />
       <header className="border-b border-b-borderColor p-5 flex items-center justify-between">
         <div className="flex items-center gap-2 m-auto text-xl">
           <BsFillBagFill />
           <b>Showwcase</b>
+        </div>
+        <div className="cursor-pointer hover:text-brand transition-all">
+          {apiKey ? <p onClick={() => setShowAccountMenu(!showAccountMenu)}>Settings</p> : <p onClick={() => setShowAPIKeyInputModal(true)}>Sign in</p>}
+
+          {showAccountMenu && <div className="border border-gray-800 p-5 rounded-xl absolute bg-gray-900 right-5 z-10 top-[50px]">
+            <ul className="text-gray-400 flex flex-col gap-3">
+              <li className={styles.iconLink} onClick={handleSignOut}>
+                <FiLogOut />
+                <p>Sign out</p>
+              </li>
+              <li className={styles.iconLink} onClick={() => {
+                setShowAccountMenu(false)
+                setShowAPIKeyInputModal(true)
+              }}>
+                <GoKey />
+                <p>Edit your API key</p>
+              </li>
+            </ul>
+          </div>}
         </div>
       </header>
       <div className="w-screen h-screen flex">
@@ -119,10 +156,6 @@ const IndexPage = () => {
             <li className={styles.iconLink}>
               <TbJumpRope />
               <p>Create a thread</p>
-            </li>
-            <li className={styles.iconLink}>
-              <BsFillBookmarkFill />
-              <p>My bookmarks</p>
             </li>
           </ul>
         </div>

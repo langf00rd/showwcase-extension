@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FiX } from "react-icons/fi"
 
 export function APIKeyInputModal({ show, onHide, onSaveKey }) {
-    const [apiKey, setAPIKey] = useState(localStorage.getItem('shcapk') || '')
+    const [apiKey, setAPIKey] = useState('')
+
+    useEffect(() => {
+        setAPIKey(localStorage.getItem('shcapk') || '')
+    }, [])
 
     if (show) return <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-10 flex flex-col items-center justify-center">
         <div className="post-info-modal p-10 rounded-xl overflow-scroll w-full max-w-xl border border-gray-700 bg-gray-800">

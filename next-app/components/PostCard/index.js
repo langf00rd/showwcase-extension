@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { BsFillBookmarkFill } from 'react-icons/bs'
 import { FiMoreVertical, FiX } from 'react-icons/fi'
 import { AiFillEye, AiFillHeart } from 'react-icons/ai'
-import { RiThumbUpFill, RiThumbDownFill } from 'react-icons/ri'
 import { FaComment } from 'react-icons/fa'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import formatDate from "../../utils/formatDate.util";
@@ -15,7 +14,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
     const [showPostInfo, setShowPostInfo] = useState(false)
 
     const PostInfoModal = () => {
-        if (showPostInfo) return <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-10 flex flex-col items-center justify-center">
+        if (showPostInfo) return <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-20 flex flex-col items-center justify-center">
             <FiX onClick={() => setShowPostInfo(false)} className="cursor-pointer hover:text-brand transition-all my-10" size={50} />
             <div className="post-info-modal p-10 rounded-xl rounded-b-none h-full overflow-scroll w-full max-w-3xl border border-gray-700 bg-gray-800">
                 <h1 className="text-3xl font-bold mb-2">{title}</h1>
