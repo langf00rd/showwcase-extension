@@ -26,13 +26,7 @@ function formatDate(dateStr) {
         </div>
       )}
       <div className="mb-3 flex flex-col gap-3">
-        <h3
-          className={`font-medium w-[200px] text-xl ${
-            title.length > 45 && "text-ellipsis"
-          }`}
-        >
-          {title}
-        </h3>
+        <h3 className={`font-medium text-xl`}>{title}</h3>
         <p className="text-gray-400">
           {formatDate(dateTime)} • <span>{readTime}</span>
         </p>
@@ -51,7 +45,7 @@ function formatDate(dateStr) {
         )}
       </div>
       <img
-        loading="lazy"
+      loading="lazy"
         src={image}
         className="w-full rounded-xl"
         alt={"blog post image of" + title}
