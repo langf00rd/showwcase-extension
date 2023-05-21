@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { HiPencil } from "react-icons/hi"
 import { TbJumpRope } from "react-icons/tb"
 import { BsFillBagFill } from "react-icons/bs"
@@ -10,7 +10,7 @@ import RecommendedShows from "../components/tabViews/RecommendedShows"
 import axios from "axios"
 import Bookmarks from "../components/tabViews/Bookmarks"
 import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
-import { FiLogOut } from "react-icons/fi"
+import { FiLogOut, FiMenu } from "react-icons/fi"
 
 const TABS = [
   "✨ Recommended shows",
@@ -27,10 +27,26 @@ const IndexPage = () => {
   const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
   const [showAccountMenu, setShowAccountMenu] = useState(false)
   const [apiKey, setAPIKey] = useState('')
+  const [showSideBar, setShowSideBar] = useState(false)
+  const sidebarRef = useRef(null);
 
   useEffect(() => {
     setAPIKey(localStorage.getItem('shcapk') || '')
   }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showSideBar && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setShowSideBar(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showSideBar]);
+
 
   const getTrendingShows = () => {
     const options = {
@@ -128,6 +144,7 @@ const IndexPage = () => {
     <main className="text-[16px] h-screen w-screen overflow-hidden">
       <APIKeyInputModal show={showAPIKeyInputModal} onSaveKey={handleSaveAPIKey} onHide={() => setShowAPIKeyInputModal(false)} />
       <header className="border-b border-b-borderColor p-5 flex justify-between items-center w-full">
+        <FiMenu onClick={() => setShowSideBar(!showSideBar)} size={24} className="mx-2 lg:hidden block" />
         <div className="flex items-center gap-1 text-xl">
           <BsFillBagFill />
           <b>Showwcase</b>
@@ -166,6 +183,25 @@ const IndexPage = () => {
             </li>
           </ul>
         </div>
+        {
+          showSideBar && (
+            <div
+              ref={sidebarRef}
+              style={{ background: "linear-gradient(172deg, #00020a, #15003a)", height: "calc(100vh - 70px)" }} className=" z-20 w-[50%] absolute flex-[1] p-5 border-r border-r-borderColor">
+              <label className={styles.label}>Create</label>
+              <ul className="text-gray-500 flex flex-col gap-3 mt-5">
+                <li className={styles.iconLink}>
+                  <HiPencil />
+                  <p>Write a show</p>
+                </li>
+                <li className={styles.iconLink}>
+                  <TbJumpRope />
+                  <p>Create a thread</p>
+                </li>
+              </ul>
+            </div>
+          )
+        }
         <div className="flex-[5] p-5 lg:px-32 md:px-20 overflow-y-scroll pb-32">
           <ul className="flex gap-4 items-center justify-center flex-wrap md:justify-start my-8">
             {TABS.map((item, index) => (
