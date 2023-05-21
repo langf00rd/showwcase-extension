@@ -75,7 +75,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
                     </li>
                 </ul>
             </div>}
-            <div className="bg-gray-900 p-5 select-none rounded-xl relative border border-gray-800 hover:border-gray-600 cursor-pointer transition-all flex flex-col justify-between">
+            <div className="bg-gray-900  max-w-[350px] p-5 select-none rounded-xl relative border border-gray-800 hover:border-gray-600 cursor-pointer transition-all flex flex-col justify-between">
                 <div className="mb-3 flex flex-col gap-3">
                     <h3 className='font-medium w-[200px] text-[20px] max-lines-2'>{title}</h3>
                     <p className="text-sm text-gray-400 flex items-center gap-3">{formatDate(dateTime)} • {readTime}</p>

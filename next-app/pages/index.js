@@ -153,7 +153,7 @@ const IndexPage = () => {
         </div>
       </header>
       <div className="w-screen h-screen flex">
-        <div className="flex-[1] p-5 border-r border-r-borderColor">
+        <div className="flex-[1] hidden lg:block p-5 border-r border-r-borderColor">
           <label className={styles.label}>Create</label>
           <ul className="text-gray-500 flex flex-col gap-3 mt-5">
             <li className={styles.iconLink}>
@@ -167,7 +167,7 @@ const IndexPage = () => {
           </ul>
         </div>
         <div className="flex-[5] p-5 lg:px-32 md:px-20 overflow-y-scroll pb-32">
-          <ul className="flex gap-4 items-center my-8">
+          <ul className="flex gap-4 items-center justify-center flex-wrap md:justify-start my-8">
             {TABS.map((item, index) => (
               <li onClick={() => setActiveTab(item)} className={activeTab === item ? styles.activeTab : styles.tab} key={index}>
                 <p>{item}</p>

@@ -4,8 +4,10 @@ import PostCard from "../../PostCard";
 export default function RecommendedShows({ shows, loading }) {
     if (loading) return <p>Loading...</p>
 
-    return <ul className="grid grid-cols-3 gap-5">
-        {shows.map((item, index) => <PostCard
+    return (
+      <ul className="grid  place-content-center md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {shows.map((item, index) => (
+          <PostCard
             key={index}
             title={item.title}
             views={item.views}
@@ -16,6 +18,8 @@ export default function RecommendedShows({ shows, loading }) {
             dateTime={item.publishedDate || item.createdAt}
             readTime={item.readingStats.text}
             image={item.coverImage}
-        />)}
-    </ul>
+          />
+        ))}
+      </ul>
+    );
 }

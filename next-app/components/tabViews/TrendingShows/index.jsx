@@ -4,7 +4,7 @@ import PostCard from "../../PostCard"
 export default function TrendingShows({ shows, loading }) {
     if (loading) return <p>Loading...</p>
 
-    return <ul className="grid grid-cols-3 gap-5">
+    return <ul className="grid  place-content-center md:grid-cols-2 lg:grid-cols-3 gap-5">
         {shows.map((item, index) => <PostCard
             key={index}
             title={item.title}
