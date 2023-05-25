@@ -1,6 +1,6 @@
 {
   "name": "Showwcase Extension",
-  "description": "Next.js Chrome Extension starter",
+  "description": "Showwcase extension for trending and recommended shows",
   "version": "0.0.1",
   "manifest_version": 2,
   "browser_action": {
