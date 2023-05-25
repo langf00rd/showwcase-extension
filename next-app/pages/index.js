@@ -12,6 +12,7 @@ import Bookmarks from "../components/tabViews/Bookmarks"
 import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
 import { FiLogOut, FiMenu } from "react-icons/fi"
 import Link from 'next/link'
+import Image from 'next/image'
 
 const TABS = [
   "✨ Recommended shows",
@@ -151,9 +152,9 @@ const IndexPage = () => {
       <APIKeyInputModal show={showAPIKeyInputModal} onSaveKey={handleSaveAPIKey} onHide={() => setShowAPIKeyInputModal(false)} />
       <header className="border-b border-b-borderColor p-5 flex justify-between items-center w-full">
         <FiMenu onClick={() => setShowSideBar(!showSideBar)} size={24} className="mx-2 lg:hidden block" />
-        <div className="flex items-center gap-1 text-xl">
-          <BsFillBagFill />
-          <b>Showwcase</b>
+        <div className="flex items-center gap-2">
+          <Image width={20} height={20} alt='logo' src='/next-assets/logo.svg' />
+          <h1 className="font-bold">Showwcase Extension</h1>
         </div>
         <div className="cursor-pointer hover:text-brand transition-all">
           {apiKey
