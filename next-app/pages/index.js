@@ -57,14 +57,14 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -79,13 +79,13 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -111,7 +111,7 @@ const IndexPage = () => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
