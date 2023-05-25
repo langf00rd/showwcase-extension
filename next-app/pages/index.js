@@ -57,14 +57,14 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function(response) {
+    axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
@@ -79,13 +79,13 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function(response) {
+    axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
@@ -111,13 +111,17 @@ const IndexPage = () => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
   }
 
   const handleSaveAPIKey = (apiKey) => {
+    if (!apiKey) {
+      alert('Enter a valid API key')
+      return
+    }
     localStorage.setItem('shcapk', apiKey)
     alert('Saved 🎉')
     window.location.reload()
@@ -175,11 +179,11 @@ const IndexPage = () => {
           <ul className="text-gray-500 flex flex-col gap-3 mt-5">
             <li className={styles.iconLink}>
               <HiPencil />
-              <p>Write a show</p>
+              <p className="flex gap-3 items-center">Write a show <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
             </li>
             <li className={styles.iconLink}>
               <TbJumpRope />
-              <p>Create a thread</p>
+              <p className="flex gap-3 items-center">Create a thread <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
             </li>
           </ul>
         </div>
@@ -192,11 +196,11 @@ const IndexPage = () => {
               <ul className="text-gray-500 flex flex-col gap-3 mt-5">
                 <li className={styles.iconLink}>
                   <HiPencil />
-                  <p>Write a show</p>
+                  <p className="flex gap-3 items-center">Write a show <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
                 </li>
                 <li className={styles.iconLink}>
                   <TbJumpRope />
-                  <p>Create a thread</p>
+                  <p className="flex gap-3 items-center">Create a thread <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
                 </li>
               </ul>
             </div>

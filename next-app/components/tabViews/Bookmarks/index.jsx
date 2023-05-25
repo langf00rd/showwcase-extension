@@ -6,6 +6,10 @@ export default function Bookmarks({ shows, loading }) {
   const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
 
   const handleSaveAPIKey = (apiKey) => {
+    if (!apiKey) {
+      alert('Enter a valid API key')
+      return
+    }
     localStorage.setItem('shcapk', apiKey)
     alert('Saved 🎉')
     window.location.reload()
