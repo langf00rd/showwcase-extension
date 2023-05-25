@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import { useState, useEffect } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { BsFillBagFill } from "react-icons/bs"
+import { FiLogOut } from "react-icons/fi"
+import { GoKey } from "react-icons/go"
 import { HiPencil } from "react-icons/hi"
 import { TbJumpRope } from "react-icons/tb"
-import { BsFillBagFill } from "react-icons/bs"
-import { GoKey } from "react-icons/go"
-import TrendingShows from "../components/tabViews/TrendingShows"
-import RecommendedShows from "../components/tabViews/RecommendedShows"
-import axios from "axios"
-import Bookmarks from "../components/tabViews/Bookmarks"
 import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
-import { FiLogOut } from "react-icons/fi"
+import Bookmarks from "../components/tabViews/Bookmarks"
+import RecommendedShows from "../components/tabViews/RecommendedShows"
+import TrendingShows from "../components/tabViews/TrendingShows"
 
 const TABS = [
   "✨ Recommended shows",
@@ -36,19 +36,19 @@ const IndexPage = () => {
     const options = {
       method: "GET",
       url: "https://cache.showwcase.com/projects/trending",
-      params: { limit: "1000" },
+      params: { limit: "500" },
     }
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -58,18 +58,18 @@ const IndexPage = () => {
     const options = {
       method: "GET",
       url: "https://cache.showwcase.com/projects/recommended",
-      params: { limit: "1000" }
+      params: { limit: "500" }
     }
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -95,7 +95,7 @@ const IndexPage = () => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -122,6 +122,38 @@ const IndexPage = () => {
   const handleSignOut = () => {
     localStorage.clear()
     window.location.reload()
+  }
+
+  const onAddBookmark = async () => {
+    console.log('vv')
+    // if (!apiKey) return
+
+    // let headersList = {
+    //   "Accept": "*/*",
+    //   "x-api-key": apiKey
+    // }
+
+    // let reqOptions = {
+    //   url: "https://beta-cache.showwcase.com/bookmarks",
+    //   method: "POST",
+    //   headers: headersList,
+    //   body: {
+    //     projectId: Date.now(),
+    //     threadId: Date.now(),
+    //   }
+    // }
+
+    // setLoading(true)
+
+    // await axios.request(reqOptions).then(response => {
+    //   console.log('response', response)
+    //   // let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
+    //   // setBookmarks(bookmarkedShows)
+    //   // setLoading(false)
+    // }).catch(function(error) {
+    //   console.error(error)
+    //   setLoading(false)
+    // })
   }
 
   return (
@@ -158,11 +190,11 @@ const IndexPage = () => {
           <ul className="text-gray-500 flex flex-col gap-3 mt-5">
             <li className={styles.iconLink}>
               <HiPencil />
-              <p>Write a show</p>
+              <p className="flex gap-3 items-center">Write a show <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
             </li>
             <li className={styles.iconLink}>
               <TbJumpRope />
-              <p>Create a thread</p>
+              <p className="flex gap-3 items-center">Create a thread <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
             </li>
           </ul>
         </div>
@@ -174,16 +206,16 @@ const IndexPage = () => {
               </li>
             ))}
           </ul>
-          {activeTab === TABS[0] && <RecommendedShows shows={recommendedShows} loading={loading} />}
-          {activeTab === TABS[1] && <TrendingShows shows={trendingShows} loading={loading} />}
-          {activeTab === TABS[2] && <Bookmarks shows={bookmarks} loading={loading} />}
+          {activeTab === TABS[0] && <RecommendedShows onAddBookmark={onAddBookmark} shows={recommendedShows} loading={loading} />}
+          {activeTab === TABS[1] && <TrendingShows onAddBookmark={onAddBookmark} shows={trendingShows} loading={loading} />}
+          {activeTab === TABS[2] && <Bookmarks onAddBookmark={onAddBookmark} shows={bookmarks} loading={loading} />}
         </div>
       </div>
     </main>
   )
 }
 
-const sharedStyles = "w-max py-2 px-3 rounded-xl cursor-pointer transition-all hover:opacity-80 select-none"
+const sharedStyles = "w-max py-2 px-3 rounded-xl cursor-pointer transition-all hover:opacity-80 select-none whitespace-nowrap"
 
 const styles = {
   tab: `${sharedStyles} bg-gray-900 text-gray-500`,
