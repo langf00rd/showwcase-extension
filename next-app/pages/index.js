@@ -45,26 +45,27 @@ const IndexPage = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [showSideBar]);
-
+  }, [showSideBar])
 
   const getTrendingShows = () => {
     const options = {
       method: "GET",
       url: "https://cache.showwcase.com/projects/trending",
-      params: { limit: "1000" },
+      params: {
+        limit: "1000"
+      },
     }
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -79,13 +80,13 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function (response) {
+    axios.request(options).then(function(response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -111,7 +112,7 @@ const IndexPage = () => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
       setLoading(false)
-    }).catch(function (error) {
+    }).catch(function(error) {
       console.error(error)
       setLoading(false)
     })
@@ -154,8 +155,9 @@ const IndexPage = () => {
           <b>Showwcase</b>
         </div>
         <div className="cursor-pointer hover:text-brand transition-all">
-          {apiKey ? <p onClick={() => setShowAccountMenu(!showAccountMenu)}>Settings</p> : <p onClick={() => setShowAPIKeyInputModal(true)}>Sign in</p>}
-
+          {apiKey
+            ? <p onClick={() => setShowAccountMenu(!showAccountMenu)}>Settings</p>
+            : <p onClick={() => setShowAPIKeyInputModal(true)}>Sign in</p>}
           {showAccountMenu && <div className="border border-gray-800 p-5 rounded-xl absolute bg-gray-900 right-5 z-10 top-[50px]">
             <ul className="text-gray-400 flex flex-col gap-3">
               <li className={styles.iconLink} onClick={handleSignOut}>

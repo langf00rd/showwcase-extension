@@ -27,7 +27,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <div className="my-5 gap-5 flex items-center justify-end">
           <div className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-brand transition-all">
             <BsFillBookmarkFill />
-            <p className="whitespace-nowrap flex gap-3">Add to bookmarks   <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
+            <p className="whitespace-nowrap flex gap-3">Add to bookmarks<span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
           </div>
           <Link passHref href={link}>
             <a href={link} target='_blank' rel='noreferrer'>
