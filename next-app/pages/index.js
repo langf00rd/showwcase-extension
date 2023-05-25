@@ -11,6 +11,7 @@ import axios from "axios"
 import Bookmarks from "../components/tabViews/Bookmarks"
 import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
 import { FiLogOut, FiMenu } from "react-icons/fi"
+import Link from 'next/link'
 
 const TABS = [
   "✨ Recommended shows",
@@ -178,16 +179,20 @@ const IndexPage = () => {
       <div className="w-screen h-screen flex">
         <div className="flex-[1] hidden lg:block p-5 border-r border-r-borderColor">
           <label className={styles.label}>Create</label>
-          <ul className="text-gray-500 flex flex-col gap-3 mt-5">
-            <li className={styles.iconLink}>
-              <HiPencil />
-              <p className="flex gap-3 items-center">Write a show <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
-            </li>
-            <li className={styles.iconLink}>
-              <TbJumpRope />
-              <p className="flex gap-3 items-center">Create a thread <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
-            </li>
-          </ul>
+          <div className="text-gray-500 flex flex-col gap-3 mt-5">
+            <Link passHref href='https://draftyapp.vercel.app'>
+              <div className={styles.iconLink}>
+                <HiPencil />
+                <p className="flex gap-3 items-center">Write a show</p>
+              </div>
+            </Link>
+            <Link passHref href='https://draftyapp.vercel.app'>
+              <div className={styles.iconLink}>
+                <TbJumpRope />
+                <p className="flex gap-3 items-center">Create a thread</p>
+              </div>
+            </Link>
+          </div>
         </div>
         {
           showSideBar && (
@@ -195,16 +200,20 @@ const IndexPage = () => {
               ref={sidebarRef}
               style={{ background: "linear-gradient(172deg, #00020a, #15003a)", height: "calc(100vh - 70px)" }} className=" z-20 w-[50%] absolute flex-[1] p-5 border-r border-r-borderColor">
               <label className={styles.label}>Create</label>
-              <ul className="text-gray-500 flex flex-col gap-3 mt-5">
-                <li className={styles.iconLink}>
-                  <HiPencil />
-                  <p className="flex gap-3 items-center">Write a show <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
-                </li>
-                <li className={styles.iconLink}>
-                  <TbJumpRope />
-                  <p className="flex gap-3 items-center">Create a thread <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
-                </li>
-              </ul>
+              <div className="text-gray-500 flex flex-col gap-3 mt-5">
+                <Link passHref href='https://draftyapp.vercel.app'>
+                  <div className={styles.iconLink}>
+                    <HiPencil />
+                    <p className="flex gap-3 items-center">Write a show</p>
+                  </div>
+                </Link>
+                <Link passHref href='https://draftyapp.vercel.app'>
+                  <div className={styles.iconLink}>
+                    <TbJumpRope />
+                    <p className="flex gap-3 items-center">Create a thread</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           )
         }
