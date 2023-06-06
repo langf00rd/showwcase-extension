@@ -41,7 +41,6 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
     await axios.request(reqOptions).then(response => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
-      console.log("refetch", bookmarkedShows)
     }).catch(function (error) {
       console.error(error)
     })
@@ -50,7 +49,6 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
   const saveBookmark = (id) => {
     if (!apiKey) {
       setShowAPIKeyInputModal(true)
-      console.log("no api key")
       return
     }
     const options = {
@@ -61,21 +59,20 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
       },
       data: { projectId: id }
     };
-    if (bookmarks.some((bookmark) => bookmark.id !== id)) {
-      const toastId = toast.loading("saving...")
-      axios.request(options).then(function (response) {
-        console.log(response.data);
-        toast.dismiss(toastId)
-        toast.success("saved to bookmarks")
-        getBookmarks()
-      }).catch(function (error) {
-        console.error(error);
-        toast.dismiss(toastId)
-        toast.success("something went wrong")
-      });
-    } else if (bookmarks.some((bookmark) => bookmark.id === id)) {
-      toast.error("already saved")
-    }
+    setShowMenu(false)
+    const toastId = toast.loading("saving...")
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+      toast.dismiss(toastId)
+      toast.success("saved to bookmarks")
+      getBookmarks()
+      console.log("bookamarks", bookmarks)
+    }).catch(function (error) {
+      console.error(error);
+      toast.dismiss(toastId)
+      toast.error("something went wrong")
+    });
+
 
 
   }
@@ -103,7 +100,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
     }).catch(function (error) {
       console.error(error);
       toast.dismiss(toastId)
-      toast.success("something went wrong")
+      toast.error("something went wrong")
     });
   }
 
@@ -123,7 +120,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <div className="my-5 gap-5 flex items-center justify-end">
           <div className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-brand transition-all">
             <BsFillBookmarkFill />
-            <p className="whitespace-nowrap flex gap-3" onClick={() => saveBookmark(id)}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
+            <p className="whitespace-nowrap flex gap-3" onClick={() => { bookmarks.some((bookmark) => bookmark.id === id) ? console.log("already saved") : saveBookmark(id) }}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
           </div>
           <Link passHref href={link} target='_blank' rel='noreferrer'>
             <button className={styles.button}>
@@ -165,7 +162,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <ul className="text-gray-400 flex flex-col gap-3">
           <li className={styles.iconLink}>
             <BsFillBookmarkFill />
-            <p className="whitespace-nowrap flex gap-3" onClick={() => { saveBookmark(id); setShowMenu(false) }}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
+            <p className="whitespace-nowrap flex gap-3" onClick={() => { bookmarks.some((bookmark) => bookmark.id === id) ? console.log("already saved") : saveBookmark(id) }}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
           </li>
         </ul>
       </div>}
