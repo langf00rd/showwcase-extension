@@ -4,14 +4,110 @@ import { BsFillBookmarkFill } from 'react-icons/bs'
 import { FiMoreVertical, FiX } from 'react-icons/fi'
 import { AiFillEye, AiFillHeart } from 'react-icons/ai'
 import { FaComment } from 'react-icons/fa'
-import { HiOutlineExternalLink } from 'react-icons/hi'
+import { HiOutlineExternalLink, HiOutlineTrash } from 'react-icons/hi'
 import formatDate from "../../utils/formatDate.util";
 import formatNumber from "../../utils/formatNumber.util";
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "react-hot-toast"
+import { useStore } from "../../store"
+import { TABS } from "../../constants/tabs"
 
-export default function PostCard({ title, dateTime, readTime, image, summary, views, link, totalUpvotes, totalComments }) {
+export default function PostCard({ title, dateTime, readTime, image, summary, views, link, totalUpvotes, totalComments, id }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showPostInfo, setShowPostInfo] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const activeTab = useStore(state => state.activeTab)
+  const bookmarks = useStore(state => state.bookmarks)
+  const setBookmarks = useStore(state => state.setBookmarks)
+  const apiKey = useStore(state => state.apiKey)
+  const setShowAPIKeyInputModal = useStore(state => state.setShowAPIKeyInputModal)
+
+  const getBookmarks = async () => {
+    if (!apiKey) return
+
+    let headersList = {
+      "Accept": "*/*",
+      "x-api-key": apiKey
+    }
+
+    let reqOptions = {
+      url: "https://cache.showwcase.com/bookmarks",
+      method: "GET",
+      headers: headersList,
+    }
+
+
+    await axios.request(reqOptions).then(response => {
+      let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
+      setBookmarks(bookmarkedShows)
+      console.log("refetch", bookmarkedShows)
+    }).catch(function (error) {
+      console.error(error)
+    })
+  }
+
+  const saveBookmark = (id) => {
+    if (!apiKey) {
+      setShowAPIKeyInputModal(true)
+      console.log("no api key")
+      return
+    }
+    const options = {
+      method: 'POST',
+      url: 'https://cache.showwcase.com/bookmarks',
+      headers: {
+        'x-api-key': apiKey
+      },
+      data: { projectId: id }
+    };
+    if (bookmarks.some((bookmark) => bookmark.id !== id)) {
+      const toastId = toast.loading("saving...")
+      axios.request(options).then(function (response) {
+        console.log(response.data);
+        toast.dismiss(toastId)
+        toast.success("saved to bookmarks")
+        getBookmarks()
+      }).catch(function (error) {
+        console.error(error);
+        toast.dismiss(toastId)
+        toast.success("something went wrong")
+      });
+    } else if (bookmarks.some((bookmark) => bookmark.id === id)) {
+      toast.error("already saved")
+    }
+
+
+  }
+
+  const removeBookmark = (id) => {
+    if (!apiKey) {
+      setShowAPIKeyInputModal(true)
+      console.log("no api key")
+      return
+    }
+    const options = {
+      method: 'DELETE',
+      url: 'https://cache.showwcase.com/bookmarks',
+      headers: {
+        'Authorization': apiKey
+      },
+      data: { projectId: id }
+    };
+    const toastId = toast.loading("removing...")
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+      toast.dismiss(toastId)
+      toast.success("removed to bookmarks")
+      getBookmarks()
+    }).catch(function (error) {
+      console.error(error);
+      toast.dismiss(toastId)
+      toast.success("something went wrong")
+    });
+  }
+
+
 
   const PostInfoModal = () => {
     if (showPostInfo) return <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-20 flex flex-col items-center justify-center">
@@ -27,15 +123,13 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <div className="my-5 gap-5 flex items-center justify-end">
           <div className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-brand transition-all">
             <BsFillBookmarkFill />
-            <p className="whitespace-nowrap flex gap-3">Add to bookmarks<span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
+            <p className="whitespace-nowrap flex gap-3" onClick={() => saveBookmark(id)}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
           </div>
-          <Link passHref href={link}>
-            <a href={link} target='_blank' rel='noreferrer'>
-              <button className={styles.button}>
-                <p>Read on Showwcase</p>
-                <HiOutlineExternalLink />
-              </button>
-            </a>
+          <Link passHref href={link} target='_blank' rel='noreferrer'>
+            <button className={styles.button}>
+              <p>Read on Showwcase</p>
+              <HiOutlineExternalLink />
+            </button>
           </Link>
         </div>
         {summary && <>
@@ -71,7 +165,7 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <ul className="text-gray-400 flex flex-col gap-3">
           <li className={styles.iconLink}>
             <BsFillBookmarkFill />
-            <p className="whitespace-nowrap flex gap-3">Add to bookmarks   <span className="text-[10px] bg-orange-200 p-1 px-2 rounded-full font-bold">SOON 🎉</span></p>
+            <p className="whitespace-nowrap flex gap-3" onClick={() => { saveBookmark(id); setShowMenu(false) }}>{bookmarks.some((bookmark) => bookmark.id === id) ? "Bookmarked" : "Add to bookmarks"}</p>
           </li>
         </ul>
       </div>}
@@ -79,8 +173,10 @@ export default function PostCard({ title, dateTime, readTime, image, summary, vi
         <div className="mb-3 flex flex-col gap-3">
           <h3 className='font-medium w-[200px] text-[20px] max-lines-2'>{title}</h3>
           <p className="text-sm text-gray-400 flex items-center gap-3">{formatDate(dateTime)} • {readTime}</p>
-          {!showMenu ? <FiMoreVertical onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />
-            : <FiX onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />}
+          {
+            activeTab === TABS[2] ? <HiOutlineTrash onClick={() => removeBookmark(id)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={28} /> : (!showMenu ? <FiMoreVertical onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />
+              : <FiX onClick={() => setShowMenu(!showMenu)} className="hover:bg-gray-800 py-1 rounded-md absolute right-3 transition-all cursor-pointer" size={25} />)
+          }
         </div>
         {image ? <img onClick={() => setShowPostInfo(true)} loading="lazy" src={image} className="w-full h-[170px] object-cover rounded-xl bg-gray-800" alt={"blog post image of " + title} />
           : <div onClick={() => setShowPostInfo(true)} className="w-full h-[170px] object-cover rounded-xl bg-gray-800" />}

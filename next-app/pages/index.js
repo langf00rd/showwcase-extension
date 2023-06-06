@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react"
 import { HiPencil } from "react-icons/hi"
 import { TbJumpRope } from "react-icons/tb"
-import { BsFillBagFill } from "react-icons/bs"
 import { GoKey } from "react-icons/go"
 import TrendingShows from "../components/tabViews/TrendingShows"
 import RecommendedShows from "../components/tabViews/RecommendedShows"
@@ -13,22 +12,25 @@ import { APIKeyInputModal } from "../components/modals/APIKeyInputModal"
 import { FiLogOut, FiMenu } from "react-icons/fi"
 import Link from 'next/link'
 import Image from 'next/image'
-
-const TABS = [
-  "✨ Recommended shows",
-  "Trending shows",
-  "My bookmarks"
-]
+import { useStore } from "../store"
+import { TABS } from "../constants/tabs"
 
 const IndexPage = () => {
-  const [activeTab, setActiveTab] = useState(TABS[0])
-  const [trendingShows, setTrendingShows] = useState([])
-  const [recommendedShows, setRecommendedShows] = useState([])
-  const [bookmarks, setBookmarks] = useState([])
+  const activeTab = useStore(state => state.activeTab)
+  const setActiveTab = useStore(state => state.setActiveTab)
+  const trendingShows = useStore(state => state.trendingShows)
+  const setTrendingShows = useStore(state => state.setTrendingShows)
+  const recommendedShows = useStore(state => state.recommendedShows)
+  const setRecommendedShows = useStore(state => state.setRecommendedShows)
+  const bookmarks = useStore(state => state.bookmarks)
+  const setBookmarks = useStore(state => state.setBookmarks)
   const [loading, setLoading] = useState(true)
-  const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
-  const [showAccountMenu, setShowAccountMenu] = useState(false)
-  const [apiKey, setAPIKey] = useState('')
+  const showAPIKeyInputModal = useStore(state => state.showAPIKeyInputModal)
+  const setShowAPIKeyInputModal = useStore(state => state.setShowAPIKeyInputModal)
+  const showAccountMenu = useStore(state => state.showAccountMenu)
+  const setShowAccountMenu = useStore(state => state.setShowAccountMenu)
+  const apiKey = useStore(state => state.apiKey)
+  const setAPIKey = useStore(state => state.setAPIKey)
   const [showSideBar, setShowSideBar] = useState(false)
   const sidebarRef = useRef(null);
 
@@ -60,14 +62,14 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function(response) {
+    axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
 
       setTrendingShows(filter)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
@@ -82,13 +84,13 @@ const IndexPage = () => {
 
     setLoading(true)
 
-    axios.request(options).then(function(response) {
+    axios.request(options).then(function (response) {
       const filter = response.data.filter((response) => {
         return response.title !== "" && response.readingStats?.words > 100
       })
       setRecommendedShows(filter)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
@@ -103,7 +105,7 @@ const IndexPage = () => {
     }
 
     let reqOptions = {
-      url: "https://beta-cache.showwcase.com/bookmarks",
+      url: "https://cache.showwcase.com/bookmarks",
       method: "GET",
       headers: headersList,
     }
@@ -113,8 +115,9 @@ const IndexPage = () => {
     await axios.request(reqOptions).then(response => {
       let bookmarkedShows = response.data.filter(item => typeof item.slug === 'string')
       setBookmarks(bookmarkedShows)
+      console.log("bookmarkedShows", bookmarkedShows)
       setLoading(false)
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error)
       setLoading(false)
     })
@@ -131,14 +134,14 @@ const IndexPage = () => {
   }
 
   useEffect(() => {
-    if (activeTab === TABS[0]) getRecommendedShows()
-    if (activeTab === TABS[1]) getTrendingShows()
+    if (activeTab === TABS[0]) { getRecommendedShows(); getBookmarks() }
+    if (activeTab === TABS[1]) { getTrendingShows(); getBookmarks() }
     if (activeTab === TABS[2]) getBookmarks()
   }, [])
 
   useEffect(() => {
-    if (activeTab === TABS[0] && recommendedShows.length < 1) getRecommendedShows()
-    if (activeTab === TABS[1] && trendingShows.length < 1) getTrendingShows()
+    if (activeTab === TABS[0] && recommendedShows.length < 1) { getRecommendedShows(); getBookmarks() }
+    if (activeTab === TABS[1] && trendingShows.length < 1) { getTrendingShows(); getBookmarks() }
     if (activeTab === TABS[2] && bookmarks.length < 1) getBookmarks()
   }, [activeTab])
 

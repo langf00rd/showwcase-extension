@@ -9,6 +9,7 @@ export default function RecommendedShows({ shows, loading }) {
       {shows.map((item, index) => (
         <PostCard
           key={index}
+          id={item.id}
           title={item.title}
           views={item.views}
           totalUpvotes={item.totalUpvotes}

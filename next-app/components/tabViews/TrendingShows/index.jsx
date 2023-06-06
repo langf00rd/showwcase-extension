@@ -3,10 +3,12 @@ import PostCard from "../../PostCard"
 
 export default function TrendingShows({ shows, loading }) {
   if (loading) return <p>Loading...</p>
+  console.log(shows)
 
   return <ul className="grid  place-content-center md:grid-cols-2 lg:grid-cols-3 gap-5">
     {shows.map((item, index) => <PostCard
       key={index}
+      id={item.id}
       title={item.title}
       views={item.views}
       totalUpvotes={item.totalUpvotes}

@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
 import PostCard from "../../PostCard"
 import { APIKeyInputModal } from "../../modals/APIKeyInputModal"
+import { useStore } from "../../../store";
 
 export default function Bookmarks({ shows, loading }) {
-  const [showAPIKeyInputModal, setShowAPIKeyInputModal] = useState(false)
+    const showAPIKeyInputModal = useStore(
+      (state) => state.showAPIKeyInputModal
+    );
+    const setShowAPIKeyInputModal = useStore(
+      (state) => state.setShowAPIKeyInputModal
+    );
+
 
   const handleSaveAPIKey = (apiKey) => {
     if (!apiKey) {
@@ -32,6 +39,7 @@ export default function Bookmarks({ shows, loading }) {
         {shows.map((item, index) => (
           <PostCard
             key={index}
+            id={item.id}
             title={item.title}
             views={item.views}
             totalUpvotes={item.totalUpvotes}
