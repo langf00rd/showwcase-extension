@@ -11,11 +11,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        borderColor: '#9a9a9a30',
-        brand: 'purple'
-      }
+        borderColor: "#9a9a9a30",
+        brand: "purple",
+      },
     },
   },
   plugins: [],
-}
-
+};
