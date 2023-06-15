@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { FiX } from "react-icons/fi"
 import { useStore } from "../../../store"
 
@@ -19,7 +19,7 @@ export function APIKeyInputModal({ show, onHide, onSaveKey }) {
             </div>
             <p className="mt-3 mb-2">We take your security seriously. That&apos;s why we don&apos;t store your API keys anywhere in our system. Rest assured that your keys are safe with you.</p>
             <input value={apiKey} onChange={event => setAPIKey(event.target.value)} className="text-white bg-transparent border border-gray-600 w-full p-3 px-4 outline-none my-3 rounded-md" placeholder="e0e25c5d28..." />
-            <a className="underline mb-5 block" href='https://beta.showwcase.com/settings/api-keys' target="_blank" rel="noreferrer">Get your API key here</a>
+            <a className="underline mb-5 block" href='https://showwcase.com/settings/api-keys' target="_blank" rel="noreferrer">Get your API key here</a>
 
             <button className={styles.button} onClick={() => onSaveKey(apiKey)}>
                 <p>Done</p>

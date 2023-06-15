@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import PostCard from "../../PostCard"
 import { APIKeyInputModal } from "../../modals/APIKeyInputModal"
 import { useStore } from "../../../store";
+import { toast } from 'react-hot-toast'
 
 export default function Bookmarks({ shows, loading }) {
-    const showAPIKeyInputModal = useStore(
-      (state) => state.showAPIKeyInputModal
-    );
-    const setShowAPIKeyInputModal = useStore(
-      (state) => state.setShowAPIKeyInputModal
-    );
+  const showAPIKeyInputModal = useStore(
+    (state) => state.showAPIKeyInputModal
+  );
+
+  const setShowAPIKeyInputModal = useStore(
+    (state) => state.setShowAPIKeyInputModal
+  );
 
 
   const handleSaveAPIKey = (apiKey) => {
@@ -18,7 +20,7 @@ export default function Bookmarks({ shows, loading }) {
       return
     }
     localStorage.setItem('shcapk', apiKey)
-    alert('Saved 🎉')
+    toast.success('Saved 🎉')
     window.location.reload()
   }
 
