@@ -2,6 +2,7 @@ import React from "react";
 import PostCard from "../../PostCard";
 
 export default function RecommendedShows({ shows, loading }) {
+
   if (loading) return <p>Loading...</p>
 
   return (
@@ -18,7 +19,7 @@ export default function RecommendedShows({ shows, loading }) {
           summary={item.projectSummary}
           dateTime={item.publishedDate || item.createdAt}
           readTime={item.readingStats.text}
-          image={item.coverImage}
+          image={item.coverImageUrl || "/next-assets/placeholder.jpg"}
         />
       ))}
     </ul>

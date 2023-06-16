@@ -34,6 +34,9 @@ a {
 .post-info-modal {
   animation: slideUp 0.1s linear;
 }
+.post-info-modal::-webkit-scrollbar{
+  display: none;
+}
 
 @keyframes slideUp {
   from {

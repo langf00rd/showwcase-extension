@@ -125,13 +125,13 @@ export default function PostCard({
   const PostInfoModal = () => {
     if (showPostInfo)
       return (
-        <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-20 flex flex-col items-center justify-center">
+        <div className="bg-[#101827e8] w-screen h-screen overflow-x-hidden overflow-y-scroll fixed left-0 top-0 z-20 flex flex-col items-center justify-center">
           <FiX
             onClick={() => setShowPostInfo(false)}
             className="cursor-pointer hover:text-brand transition-all my-10"
             size={50}
           />
-          <div className="post-info-modal p-10 rounded-xl rounded-b-none h-full overflow-scroll w-full max-w-3xl border border-gray-700 bg-gray-800">
+          <div className="post-info-modal p-10 rounded-xl rounded-b-none h-full overflow-x-hidden overflow-scroll w-full max-w-3xl border border-gray-700 bg-gray-800">
             <h1 className="text-3xl font-bold mb-2">{title}</h1>
             <div className="flex items-center gap-5">
               <p className="text-gray-500 flex items-center gap-3">

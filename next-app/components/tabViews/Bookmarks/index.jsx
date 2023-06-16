@@ -21,7 +21,8 @@ export default function Bookmarks({ shows, loading }) {
     }
     localStorage.setItem('shcapk', apiKey)
     toast.success('Saved 🎉')
-    window.location.reload()
+    setShowAPIKeyInputModal(false)
+    // window.location.reload()
   }
 
   if (loading) return <p>Loading...</p>
@@ -50,7 +51,7 @@ export default function Bookmarks({ shows, loading }) {
             summary={item.projectSummary}
             dateTime={item.publishedDate || item.createdAt}
             readTime={item.readingStats.text}
-            image={item.coverImage}
+            image={item.coverImageUrl || "/next-assets/placeholder.jpg"}
           />
         ))}
       </ul>

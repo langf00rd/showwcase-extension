@@ -13,7 +13,7 @@ export function APIKeyInputModal({ show, onHide, onSaveKey }) {
 
   if (show)
     return (
-      <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-20 flex flex-col p-2 items-center justify-center">
+      <div className="bg-[#101827e8] w-screen h-screen overflow-y-scroll fixed left-0 top-0 z-30 flex flex-col p-2 items-center justify-center">
         <div className="post-info-modal p-10 rounded-xl  w-full max-w-xl border border-gray-700 bg-gray-800">
           <div className="flex items-center justify-between">
             <h3 className="text-white font-bold text-xl">Enter your API key</h3>

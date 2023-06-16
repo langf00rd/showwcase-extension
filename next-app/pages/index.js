@@ -146,7 +146,9 @@ const IndexPage = () => {
     }
     localStorage.setItem("shcapk", apiKey);
     toast.success("Saved 🎉");
-    window.location.reload();
+    setShowAPIKeyInputModal(false);
+
+    // window.location.reload();
   };
 
   useEffect(() => {
